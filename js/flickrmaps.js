@@ -97,19 +97,27 @@ function buildInfoWindow( photo ){
 		$(div).html(
 			"<h4>" + photo.title + "</h4>" +
 			'<a href="' + photo.media.m.replace('_m', '') + '" rel="lightbox-gallery" class="flickr">' +
-			'<img src="' + photo.media.m + '" style="overflow:hidden; width:210px; min-height:160px;" />' +
+			'<img src="' + photo.media.m + '" border="0" height="150" onload="resizeInfoWindow(event)" />' +
 			'</a>' +
-			'<p>Click the photo for larger view</p>'
+			'<p class="moreInfo">Click the photo for larger view</p>'
 		);
-//		$(div).contents("a#zoom").bind("click", makeZoomCallback( photo ) );
 		$(div).contents("a.flickr").bind("click", launchSlimBox( photo  ) );
+
 		/*
 		// Add event listener 
 		var link = div.getElementsByTagName('a')[0]; 
 		google.maps.Event.addDomListener( link, 'click', makeZoomCallback( photo ) ); 
-		*/			
+		//		$(div).contents("a#zoom").bind("click", makeZoomCallback( photo ) );
+		*/		
 	return div;
 }
+
+function resizeInfoWindow( event ){
+	var w = event.target.width;
+	var h = event.target.height;
+	var infoBox = $(event.target).parent().parent();
+}
+
 	
 function highlightPhoto( photo ){ 
 	var links = $("#photos li a img");
@@ -180,7 +188,9 @@ function launchSlimBox( photo ){
 		//Stop the link from activating
 		stopEvent( e );
 		//Fire off Slimbox		
-		jQuery.slimbox( photo.media.m.replace('_m', '') , photo.title + "<br/><span style='font-size: 0.8em'>" + $(photo.description).next().text() + "<br/><a href='http://www.flickr.com/photos/jonkaj/' target='_blank'>View My Flickr Photostream</a></span>" );
+		jQuery.slimbox( photo.media.m.replace('_m', '') , photo.title + "<br/><span style='font-size: 0.8em'>" + 
+														  $(photo.description).next().text() + "<br/>" + 
+														  "<a href='" + $("#photos").attr("alt") + "' target='_blank'>View My Flickr Photostream</a></span>" );
 	}
 }
 
